@@ -6,17 +6,17 @@ const TEAM_MEMBERS = [
   {
     name: 'Shivam Tiwari',
     role: 'CEO',
-    photo: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?q=80&w=400&auto=format&fit=crop'
+    photo: '/team/shivam-tiwari-ceo.jpeg'
   },
   {
     name: 'Juhi Pawar',
     role: 'CTO',
-    photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop'
+    photo: '/team/juhi-pawar-cto.jpeg'
   },
   {
     name: 'Kajal Pal',
     role: 'CMO',
-    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop'
+    photo: '/team/kajal-pal-cmo.jpeg'
   }
 ];
 
@@ -54,7 +54,7 @@ export default function AboutPage() {
 
       {/* Mission & Vision Grid */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-        
+
         {/* Card 1: Story */}
         <div className="bg-white border border-gold/10 p-8 rounded-lg shadow-sm text-center space-y-4">
           <div className="w-12 h-12 bg-gold/10 text-gold rounded-full flex items-center justify-center mx-auto">

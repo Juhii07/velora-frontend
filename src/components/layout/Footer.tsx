@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Compass } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
 import { useSettingsStore } from '@/store/settings.store';
 import api from '@/utils/api';
 
@@ -25,7 +25,7 @@ export default function Footer() {
     <footer className="bg-luxury-charcoal text-gray-400 border-t border-gold/10 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          
+
           {/* Brand Info */}
           <div>
             <span className="font-outfit text-2xl font-extrabold tracking-widest text-gold block mb-6">
@@ -35,10 +35,7 @@ export default function Footer() {
               Crafting premium architectural jewelry that tells a story of elegance and meticulous geometry.
             </p>
             <div className="flex space-x-4">
-              <a href={settings?.socialLinks?.facebook || '#'} className="hover:text-gold transition-colors"><Facebook size={18} /></a>
-              <a href={settings?.socialLinks?.instagram || '#'} className="hover:text-gold transition-colors"><Instagram size={18} /></a>
-              <a href={settings?.socialLinks?.twitter || '#'} className="hover:text-gold transition-colors"><Twitter size={18} /></a>
-              <a href="#" className="hover:text-gold transition-colors"><Compass size={18} /></a>
+              <a href="https://instagram.com/thevelora_era" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors"><Instagram size={18} /></a>
             </div>
           </div>
 
@@ -61,15 +58,15 @@ export default function Footer() {
             <ul className="space-y-4 text-sm font-light">
               <li className="flex items-start">
                 <MapPin className="text-gold mr-3 shrink-0" size={18} />
-                <span>{settings?.address || '742 Luxury Boulevard, Fashion District, NY 10001'}</span>
+                <span>{settings?.address || 'Row house-2 Apna ghar socienty near kachigam checkpost, Vapi-396191'}</span>
               </li>
               <li className="flex items-center">
                 <Phone className="text-gold mr-3 shrink-0" size={18} />
-                <span>{settings?.phone || '+1 (800) 809-9834'}</span>
+                <span>{settings?.phone || '+91 9336896144'}</span>
               </li>
               <li className="flex items-center">
                 <Mail className="text-gold mr-3 shrink-0" size={18} />
-                <span>{settings?.email || 'concierge@veloraboutique.com'}</span>
+                <span>{settings?.email || 'velora1526@gmail.com'}</span>
               </li>
             </ul>
           </div>

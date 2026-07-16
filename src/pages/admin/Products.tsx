@@ -6,6 +6,8 @@ export default function AdminProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
 
   // Dialog / Edit states
   const [isEditing, setIsEditing] = useState(false);
@@ -38,12 +40,33 @@ export default function AdminProductsPage() {
     setIsLoading(false);
   };
 
+  const fetchCategories = async () => {
+    try {
+      const res = await api.get('/categories');
+      setCategories(res.data.data);
+    } catch (err) {}
+  };
+
   useEffect(() => {
     fetchInventory();
-    api.get('/categories')
-      .then(res => setCategories(res.data.data))
-      .catch(() => {});
+    fetchCategories();
   }, []);
+
+  const handleAddCategory = async () => {
+    const trimmed = newCategoryName.trim();
+    if (!trimmed) return;
+    setIsAddingCategory(true);
+    try {
+      const res = await api.post('/categories', { name: trimmed });
+      const created = res.data.data;
+      await fetchCategories();
+      setCategory(created?._id || category);
+      setNewCategoryName('');
+    } catch (err: any) {
+      alert(err?.response?.data?.error || 'Failed to add category');
+    }
+    setIsAddingCategory(false);
+  };
 
   const handleEditClick = (p: any) => {
     setEditId(p._id);
@@ -136,7 +159,7 @@ export default function AdminProductsPage() {
 
   return (
     <div className="space-y-8">
-      
+
       {/* Header bar */}
       <div className="flex justify-between items-center">
         <div>
@@ -183,6 +206,23 @@ export default function AdminProductsPage() {
                   <option key={c._id} value={c._id}>{c.name}</option>
                 ))}
               </select>
+              <div className="flex gap-2 mt-2">
+                <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="New category name (e.g. Earrings)"
+                  className="flex-1 bg-luxury-sand/30 border border-gold/10 focus:border-gold px-3 py-2 rounded focus:outline-none text-xs"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddCategory}
+                  disabled={isAddingCategory || !newCategoryName.trim()}
+                  className="px-3 py-2 bg-luxury-charcoal text-white text-[10px] font-bold uppercase tracking-wider rounded hover:bg-gold disabled:opacity-50 whitespace-nowrap"
+                >
+                  {isAddingCategory ? 'Adding...' : '+ Add'}
+                </button>
+              </div>
             </div>
 
             <div>
@@ -219,7 +259,7 @@ export default function AdminProductsPage() {
 
             <div className="sm:col-span-2">
               <label className="block font-semibold uppercase tracking-wider mb-1.5 text-gray-500">Product Images</label>
-              
+
               {/* Existing Images Gallery */}
               {images.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-3">
@@ -498,7 +538,7 @@ export default function AdminProductsPage() {
           </div>
         )}
       </div>
-      
+
     </div>
   );
 }
