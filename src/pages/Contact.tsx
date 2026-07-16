@@ -28,7 +28,7 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-      
+
       {/* Header */}
       <div className="text-center space-y-3">
         <h1 className="text-3xl font-extrabold uppercase tracking-widest font-outfit text-luxury-charcoal">
@@ -41,7 +41,7 @@ export default function ContactPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        
+
         {/* Left Side: Contact Coordinates */}
         <div className="bg-white border border-gold/10 p-8 rounded-lg space-y-6">
           <h3 className="font-outfit text-sm font-bold uppercase tracking-wider border-b border-gold/10 pb-3">
@@ -56,21 +56,21 @@ export default function ContactPage() {
               <MapPin className="text-gold mr-3 shrink-0" size={18} />
               <div>
                 <strong className="block text-luxury-charcoal font-semibold mb-0.5">Address</strong>
-                {settings?.address || 'Row house-2,Apna ghar society near kachigam checkpost,vapi-396191'}
+                Row house-2, Apna ghar society near kachigam checkpost, Vapi-396191
               </div>
             </li>
             <li className="flex items-center">
               <Phone className="text-gold mr-3 shrink-0" size={18} />
               <div>
                 <strong className="block text-luxury-charcoal font-semibold mb-0.5">Concierge Phone</strong>
-                {settings?.phone || '+1 (933) 689-6144'}
+                +91 9336896144
               </div>
             </li>
             <li className="flex items-center">
               <Mail className="text-gold mr-3 shrink-0" size={18} />
               <div>
                 <strong className="block text-luxury-charcoal font-semibold mb-0.5">Email Support</strong>
-                {settings?.email || 'velora1526@gmail.com'}
+                velora1526@gmail.com
               </div>
             </li>
           </ul>
