@@ -58,15 +58,15 @@ export default function Footer() {
             <ul className="space-y-4 text-sm font-light">
               <li className="flex items-start">
                 <MapPin className="text-gold mr-3 shrink-0" size={18} />
-                <span>{settings?.address || 'Row house-2 Apna ghar socienty near kachigam checkpost, Vapi-396191'}</span>
+                <span>Row house-2 Apna ghar socienty near kachigam checkpost, Vapi-396191</span>
               </li>
               <li className="flex items-center">
                 <Phone className="text-gold mr-3 shrink-0" size={18} />
-                <span>{settings?.phone || '+91 9336896144'}</span>
+                <span>+91 9336896144</span>
               </li>
               <li className="flex items-center">
                 <Mail className="text-gold mr-3 shrink-0" size={18} />
-                <span>{settings?.email || 'velora1526@gmail.com'}</span>
+                <span>velora1526@gmail.com</span>
               </li>
             </ul>
           </div>
