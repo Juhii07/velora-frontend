@@ -11,7 +11,7 @@ export default function HomePage() {
   const [banners, setBanners] = useState<any[]>([]);
   const [isLoadingBanners, setIsLoadingBanners] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [categories, setCategories] = useState<any[]>([]);
+  // const [categories, setCategories] = useState<any[]>([]);
   const [trendingProducts, setTrendingProducts] = useState<any[]>([]);
   const [newArrivals, setNewArrivals] = useState<any[]>([]);
   const [bestSellers, setBestSellers] = useState<any[]>([]);
@@ -27,9 +27,9 @@ export default function HomePage() {
       .finally(() => setIsLoadingBanners(false));
 
     // Categories
-    api.get('/categories')
-      .then(res => setCategories(res.data.data.slice(0, 5)))
-      .catch(() => {});
+    // api.get('/categories')
+    //   .then(res => setCategories(res.data.data.slice(0, 5)))
+    //   .catch(() => {});
 
     // Products (segmented by tags)
     api.get('/products?tags=Trending&limit=4')
@@ -172,7 +172,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-          {categories.map((cat, idx) => (
+          {/* {categories.map((cat, idx) => (
             <Link
               key={idx}
               to={`/shop?category=${cat._id}`}
@@ -189,7 +189,7 @@ export default function HomePage() {
                 </span>
               </div>
             </Link>
-          ))}
+          ))} */}
         </div>
       </section>
 
