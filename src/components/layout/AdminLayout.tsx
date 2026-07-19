@@ -1,8 +1,21 @@
 import React, { useEffect } from 'react';
-import { useNavigate, Link, Outlet } from 'react-router-dom';
+import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth.store';
 import api from '@/utils/api';
-import { LayoutDashboard, ShoppingBag, Sliders, Image, AlertTriangle, ShieldCheck, Home, ClipboardList, Users } from 'lucide-react';
+import {
+  LayoutDashboard, ShoppingBag, Sliders, Image, AlertTriangle,
+  ShieldCheck, Home, ClipboardList, Users, Star, Menu, X
+} from 'lucide-react';
+
+const NAV_ITEMS = [
+  { to: '/admin/dashboard', label: 'Overview', icon: LayoutDashboard },
+  { to: '/admin/orders', label: 'Orders', icon: ClipboardList },
+  { to: '/admin/products', label: 'Products', icon: ShoppingBag },
+  { to: '/admin/reviews', label: 'Reviews', icon: Star },
+  { to: '/admin/banners', label: 'Banners', icon: Image },
+  { to: '/admin/customers', label: 'Clients', icon: Users },
+  { to: '/admin/settings', label: 'Page Settings', icon: Sliders },
+];
 
 // Note: the original Next.js version served the admin portal on a separate
 // dev port (3001) as a crude access boundary. In this single-server Vite/React
@@ -10,13 +23,15 @@ import { LayoutDashboard, ShoppingBag, Sliders, Image, AlertTriangle, ShieldChec
 // removed -- route-level auth/role checks below are the real access control.
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, setAuth } = useAuthStore();
   const [isChecking, setIsChecking] = React.useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   useEffect(() => {
 
     const hasToken = typeof window !== 'undefined' ? !!localStorage.getItem('velora_token') : false;
-    
+
     if (!hasToken) {
       navigate('/auth/login?redirect=admin/dashboard');
     } else if (user) {
@@ -34,6 +49,11 @@ export default function AdminLayout() {
         });
     }
   }, [user, navigate]);
+
+  // Close the mobile drawer automatically whenever the route changes
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [location.pathname]);
 
   if (isChecking && !user) {
     return <div className="text-center py-20 font-light text-gray-500">Checking credentials...</div>;
@@ -61,66 +81,91 @@ export default function AdminLayout() {
     );
   }
 
-  return (
-    <div className="min-h-screen flex bg-luxury-sand/30">
-      
-      {/* Sidebar navigation */}
-      <aside className="w-64 bg-luxury-charcoal text-gray-400 border-r border-gold/10 flex flex-col justify-between p-6">
-        <div className="space-y-8">
-          <div className="border-b border-gold/10 pb-4">
+  const sidebarContent = (
+    <>
+      <div className="space-y-8">
+        <div className="border-b border-gold/10 pb-4 flex items-center justify-between">
+          <div>
             <span className="font-outfit text-xl font-extrabold tracking-widest text-white block">VELORA</span>
             <span className="text-[10px] text-gold uppercase tracking-wider font-bold block mt-0.5 flex items-center gap-1">
               <ShieldCheck size={12} /> Admin Studio
             </span>
           </div>
-
-          <nav className="space-y-1.5 text-xs font-bold uppercase tracking-wider">
-            <Link
-              to="/admin/dashboard"
-              className="flex items-center gap-3 px-4 py-2.5 rounded hover:bg-luxury-beige/10 hover:text-white transition-all"
-            >
-              <LayoutDashboard size={16} /> Overview
-            </Link>
-            <Link
-              to="/admin/orders"
-              className="flex items-center gap-3 px-4 py-2.5 rounded hover:bg-luxury-beige/10 hover:text-white transition-all"
-            >
-              <ClipboardList size={16} /> Orders
-            </Link>
-            <Link
-              to="/admin/products"
-              className="flex items-center gap-3 px-4 py-2.5 rounded hover:bg-luxury-beige/10 hover:text-white transition-all"
-            >
-              <ShoppingBag size={16} /> Products
-            </Link>
-            <Link
-              to="/admin/banners"
-              className="flex items-center gap-3 px-4 py-2.5 rounded hover:bg-luxury-beige/10 hover:text-white transition-all"
-            >
-              <Image size={16} /> Banners
-            </Link>
-            <Link
-              to="/admin/customers"
-              className="flex items-center gap-3 px-4 py-2.5 rounded hover:bg-luxury-beige/10 hover:text-white transition-all"
-            >
-              <Users size={16} /> Clients
-            </Link>
-            <Link
-              to="/admin/settings"
-              className="flex items-center gap-3 px-4 py-2.5 rounded hover:bg-luxury-beige/10 hover:text-white transition-all"
-            >
-              <Sliders size={16} /> Page Settings
-            </Link>
-          </nav>
+          {/* Close button, mobile drawer only */}
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="md:hidden text-gray-400 hover:text-white p-1"
+            aria-label="Close menu"
+          >
+            <X size={20} />
+          </button>
         </div>
 
-        <div className="text-[10px] text-gray-500 border-t border-gold/10 pt-4">
-          Logged in as <span className="text-white block truncate">{user.email}</span>
-        </div>
+        <nav className="space-y-1.5 text-xs font-bold uppercase tracking-wider">
+          {NAV_ITEMS.map(({ to, label, icon: Icon }) => {
+            const isActive = location.pathname === to;
+            return (
+              <Link
+                key={to}
+                to={to}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded transition-all ${
+                  isActive
+                    ? 'bg-gold/15 text-gold'
+                    : 'hover:bg-luxury-beige/10 hover:text-white'
+                }`}
+              >
+                <Icon size={16} /> {label}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
+      <div className="text-[10px] text-gray-500 border-t border-gold/10 pt-4">
+        Logged in as <span className="text-white block truncate">{user.email}</span>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="min-h-screen flex bg-luxury-sand/30">
+
+      {/* Mobile top bar */}
+      <div className="md:hidden fixed top-0 inset-x-0 z-30 bg-luxury-charcoal text-white flex items-center justify-between px-4 py-3.5 border-b border-gold/10">
+        <span className="font-outfit text-lg font-extrabold tracking-widest">VELORA</span>
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="p-1.5 text-gray-300 hover:text-white"
+          aria-label="Open menu"
+        >
+          <Menu size={22} />
+        </button>
+      </div>
+
+      {/* Mobile drawer overlay */}
+      {isSidebarOpen && (
+        <div
+          onClick={() => setIsSidebarOpen(false)}
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+        />
+      )}
+
+      {/* Mobile drawer */}
+      <aside
+        className={`md:hidden fixed top-0 left-0 h-full w-72 max-w-[80vw] bg-luxury-charcoal text-gray-400 border-r border-gold/10 flex flex-col justify-between p-6 z-50 transform transition-transform duration-300 ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {sidebarContent}
+      </aside>
+
+      {/* Desktop sidebar (always visible, static) */}
+      <aside className="hidden md:flex w-64 bg-luxury-charcoal text-gray-400 border-r border-gold/10 flex-col justify-between p-6 shrink-0">
+        {sidebarContent}
       </aside>
 
       {/* Main workspace */}
-      <main className="flex-1 p-10 overflow-y-auto">
+      <main className="flex-1 p-4 pt-20 sm:p-6 md:p-10 md:pt-10 overflow-y-auto min-w-0">
         <Outlet />
       </main>
 

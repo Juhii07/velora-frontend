@@ -25,6 +25,7 @@ import AdminProducts from '@/pages/admin/Products';
 import AdminBanners from '@/pages/admin/Banners';
 import AdminCustomers from '@/pages/admin/Customers';
 import AdminSettings from '@/pages/admin/Settings';
+import AdminReviewsPage from '@/pages/admin/Reviews';
 
 export default function App() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
           <Route path="banners" element={<AdminBanners />} />
           <Route path="customers" element={<AdminCustomers />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="reviews" element={<AdminReviewsPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
