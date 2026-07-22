@@ -205,9 +205,9 @@ function CheckoutContent() {
           Order Confirmed
         </h1>
         <p className="text-sm font-light text-gray-500 max-w-sm mx-auto leading-relaxed">
-          Thank you for choosing VELORA. Your order has been placed successfully. Order ID: <span className="font-semibold text-luxury-charcoal">{successOrder._id}</span>
+          Thank you for choosing VELORA. Your order has been placed successfully. Order ID: <span className="font-semibold text-luxury-charcoal break-all">{successOrder._id}</span>
         </p>
-        <div className="flex gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
           <Link
             to="/profile"
             className="px-6 py-2.5 bg-gold text-white font-outfit text-xs font-bold uppercase tracking-wider rounded hover:bg-gold-dark transition-colors"
@@ -357,8 +357,8 @@ function CheckoutContent() {
           <div className="space-y-4 max-h-60 overflow-y-auto">
             {items.map((item, idx) => (
               <div key={idx} className="flex gap-3 justify-between items-center text-xs">
-                <span className="font-semibold text-luxury-charcoal truncate max-w-xs">{item.product.name} (x{item.quantity})</span>
-                <span className="font-outfit font-semibold">₹{((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}</span>
+                <span className="font-semibold text-luxury-charcoal truncate min-w-0 flex-1">{item.product.name} (x{item.quantity})</span>
+                <span className="font-outfit font-semibold shrink-0">₹{((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}</span>
               </div>
             ))}
           </div>

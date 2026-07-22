@@ -128,10 +128,10 @@ export default function CartPage() {
           {items.map((item, idx) => (
             <div
               key={idx}
-              className="bg-white border border-gold/10 p-4 rounded-lg flex gap-4 items-center justify-between"
+              className="bg-white border border-gold/10 p-4 rounded-lg flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between"
             >
               {/* Product Info */}
-              <div className="flex gap-4 items-center flex-grow">
+              <div className="flex gap-4 items-center flex-grow min-w-0">
                 <div className="w-20 h-20 bg-luxury-sand rounded overflow-hidden aspect-square shrink-0">
                   <img
                     src={item.product.images[0] || 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=200&auto=format&fit=crop'}
@@ -139,7 +139,7 @@ export default function CartPage() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="space-y-1 truncate">
+                <div className="space-y-1 min-w-0 flex-1">
                   <Link to={`/product/${item.product.slug}`} className="font-outfit text-sm font-semibold hover:text-gold transition-colors block truncate">
                     {item.product.name}
                   </Link>
@@ -150,34 +150,36 @@ export default function CartPage() {
                 </div>
               </div>
 
-              {/* Quantity Changer */}
-              <div className="flex items-center border border-gold/20 rounded">
-                <button
-                  onClick={() => handleQtyChange(item.product._id, item.quantity, item.quantity - 1, item.product.stock)}
-                  className="px-2.5 py-1 text-gray-500 hover:text-gold"
-                >
-                  -
-                </button>
-                <span className="px-3 py-1 text-xs font-outfit font-semibold">{item.quantity}</span>
-                <button
-                  onClick={() => handleQtyChange(item.product._id, item.quantity, item.quantity + 1, item.product.stock)}
-                  className="px-2.5 py-1 text-gray-500 hover:text-gold"
-                >
-                  +
-                </button>
-              </div>
+              {/* Quantity Changer + Price/Remove - side by side row on mobile, own column on larger screens */}
+              <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 pl-24 sm:pl-0">
+                <div className="flex items-center border border-gold/20 rounded shrink-0">
+                  <button
+                    onClick={() => handleQtyChange(item.product._id, item.quantity, item.quantity - 1, item.product.stock)}
+                    className="px-2.5 py-1 text-gray-500 hover:text-gold"
+                  >
+                    -
+                  </button>
+                  <span className="px-3 py-1 text-xs font-outfit font-semibold">{item.quantity}</span>
+                  <button
+                    onClick={() => handleQtyChange(item.product._id, item.quantity, item.quantity + 1, item.product.stock)}
+                    className="px-2.5 py-1 text-gray-500 hover:text-gold"
+                  >
+                    +
+                  </button>
+                </div>
 
-              {/* Price Total / Remove */}
-              <div className="flex flex-col items-end gap-2 text-right pl-4">
-                <span className="text-sm font-outfit font-bold text-luxury-charcoal">
-                    ₹{((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}
-                </span>
-                <button
-                  onClick={() => handleRemove(item.product._id)}
-                  className="text-red-500 hover:text-red-700 transition-colors"
-                >
-                  <Trash2 size={16} />
-                </button>
+                {/* Price Total / Remove */}
+                <div className="flex flex-col items-end gap-2 text-right shrink-0">
+                  <span className="text-sm font-outfit font-bold text-luxury-charcoal">
+                      ₹{((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}
+                  </span>
+                  <button
+                    onClick={() => handleRemove(item.product._id)}
+                    className="text-red-500 hover:text-red-700 transition-colors"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
 
             </div>

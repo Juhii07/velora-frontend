@@ -189,12 +189,12 @@ export default function ProductDetailsPage() {
 
           {/* Miniature Image Thumbnails */}
           {product.images.length > 1 && (
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               {product.images.map((img: string, idx: number) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImage(img)}
-                  className={`w-20 h-20 border rounded overflow-hidden aspect-square bg-luxury-sand ${
+                  className={`w-16 h-16 sm:w-20 sm:h-20 border rounded overflow-hidden aspect-square bg-luxury-sand shrink-0 ${
                     activeImage === img ? 'border-gold border-2' : 'border-gold/10'
                   }`}
                 >
@@ -315,7 +315,7 @@ export default function ProductDetailsPage() {
           </div>
 
           {/* Policy Badges */}
-          <div className="grid grid-cols-3 gap-4 pt-8 text-center text-gray-500 text-xs font-light">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 text-center text-gray-500 text-xs font-light">
             <div className="flex flex-col items-center gap-1.5 p-3 bg-luxury-sand/30 rounded">
               <Truck size={18} className="text-gold" />
               <span>Complimentary Shipping</span>

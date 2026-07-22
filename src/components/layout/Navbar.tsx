@@ -18,13 +18,12 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
-  // Sync state if user is logged in
   useEffect(() => {
     if (user) {
       api.get('/cart')
         .then(res => setItems(res.data.data.items))
         .catch(() => {});
-      
+
       api.get('/wishlist')
         .then(res => setWishlistIds(res.data.data.products))
         .catch(() => {});
@@ -54,10 +53,10 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 w-full transition-all duration-300 border-b border-gold/10 backdrop-blur-md bg-white/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          
+
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="font-outfit text-2xl font-extrabold tracking-widest text-gold hover:text-gold-dark transition-colors">
+            <Link to="/" className="font-outfit text-xl sm:text-2xl font-extrabold tracking-widest text-gold hover:text-gold-dark transition-colors">
               {settings?.websiteName || 'VELORA'}
             </Link>
           </div>
@@ -72,14 +71,14 @@ export default function Navbar() {
           </div>
 
           {/* Right Utility Icons */}
-          <div className="flex items-center space-x-6">
-            
-            {/* Search Bar Slider */}
+          <div className="flex items-center space-x-3 sm:space-x-6">
+
+            {/* Search Bar Slider - hidden on phones to save space, still reachable via mobile drawer below */}
             {/* suppressHydrationWarning: browser autofill/form-filler extensions
                inject a "fdprocessedid" attribute on inputs/buttons right after
                load, before React hydrates -- this is not caused by our code,
                so we suppress the resulting (harmless) console warning here. */}
-            <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+            <form onSubmit={handleSearchSubmit} className="relative items-center hidden sm:flex">
               <input
                 type="text"
                 placeholder="Search premium pieces..."
@@ -87,25 +86,25 @@ export default function Navbar() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 suppressHydrationWarning
                 className={`transition-all duration-300 bg-luxury-sand/50 text-sm border-gold/20 focus:border-gold focus:outline-none px-4 py-1.5 rounded-full ${
-                  isSearchOpen ? 'w-48 sm:w-64 opacity-100' : 'w-0 opacity-0 pointer-events-none'
+                  isSearchOpen ? 'w-32 sm:w-48 md:w-64 opacity-100' : 'w-0 opacity-0 pointer-events-none'
                 }`}
               />
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 suppressHydrationWarning
-                className="p-1 text-luxury-charcoal hover:text-gold transition-colors ml-2"
+                className="p-1 text-luxury-charcoal hover:text-gold transition-colors ml-1 sm:ml-2"
               >
-                <Search size={20} />
+                <Search size={19} />
               </button>
             </form>
 
-            {/* Wishlist */}
+            {/* Wishlist - hidden below sm to keep the bar from crowding on phones, still reachable from the mobile drawer */}
             {settings?.features?.wishlist !== false && (
-              <Link to="/wishlist" className="relative p-1 text-luxury-charcoal hover:text-gold transition-colors">
-                <Heart size={20} />
+              <Link to="/wishlist" className="relative p-1 text-luxury-charcoal hover:text-gold transition-colors hidden sm:inline-flex">
+                <Heart size={19} />
                 {wishlistIds.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gold text-white font-outfit text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
+                  <span className="absolute -top-1 -right-1 bg-gold text-white font-outfit text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
                     {wishlistIds.length}
                   </span>
                 )}
@@ -114,24 +113,24 @@ export default function Navbar() {
 
             {/* Cart */}
             <Link to="/cart" className="relative p-1 text-luxury-charcoal hover:text-gold transition-colors">
-              <ShoppingBag size={20} />
+              <ShoppingBag size={19} />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gold text-white font-outfit text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-gold text-white font-outfit text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
             </Link>
 
-            {/* Profile Dropdown */}
-            <div className="relative">
+            {/* Profile Dropdown - hidden on the smallest screens, accessible via mobile drawer instead */}
+            <div className="relative hidden sm:block">
               {user ? (
                 <>
                   <button
                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                     className="flex items-center space-x-1.5 p-1 text-luxury-charcoal hover:text-gold transition-colors focus:outline-none"
                   >
-                    <UserIcon size={20} />
-                    <span className="hidden sm:inline text-xs font-medium uppercase tracking-wider">{user.name.split(' ')[0]}</span>
+                    <UserIcon size={19} />
+                    <span className="hidden lg:inline text-xs font-medium uppercase tracking-wider">{user.name.split(' ')[0]}</span>
                   </button>
                   {isProfileDropdownOpen && (
                     <div className="absolute right-0 mt-3 w-48 bg-white border border-gold/10 rounded-md shadow-xl py-1 z-50">
@@ -165,8 +164,8 @@ export default function Navbar() {
                 </>
               ) : (
                 <Link to="/auth/login" className="flex items-center space-x-1.5 p-1 text-luxury-charcoal hover:text-gold transition-colors">
-                  <UserIcon size={20} />
-                  <span className="hidden sm:inline text-xs font-medium uppercase tracking-wider">Login</span>
+                  <UserIcon size={19} />
+                  <span className="hidden lg:inline text-xs font-medium uppercase tracking-wider">Login</span>
                 </Link>
               )}
             </div>
@@ -183,37 +182,112 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer - now also carries Search, Wishlist, Account/Login since those icons are hidden below sm */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-gold/10 bg-white px-4 py-4 space-y-3 shadow-lg">
+        <div className="md:hidden border-t border-gold/10 bg-white px-4 py-4 space-y-1 shadow-lg max-h-[80vh] overflow-y-auto">
+          {/* suppressHydrationWarning: see note above on the desktop search form */}
+          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 mb-3 sm:hidden">
+            <input
+              type="text"
+              placeholder="Search premium pieces..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              suppressHydrationWarning
+              className="flex-1 bg-luxury-sand/50 text-sm border border-gold/20 focus:border-gold focus:outline-none px-4 py-2 rounded-full"
+            />
+            <button
+              type="submit"
+              suppressHydrationWarning
+              className="p-2 text-luxury-charcoal hover:text-gold transition-colors shrink-0"
+            >
+              <Search size={19} />
+            </button>
+          </form>
+
           <Link
             to="/"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+            className="block px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
           >
             Home
           </Link>
           <Link
             to="/shop"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+            className="block px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
           >
             Shop
           </Link>
           <Link
+            to="/shop?category=bracelets"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="block px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+          >
+            Collections
+          </Link>
+          <Link
             to="/about"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+            className="block px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
           >
             About
           </Link>
           <Link
             to="/contact"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+            className="block px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
           >
             Contact
           </Link>
+
+          <div className="border-t border-gold/10 my-2 pt-2 space-y-1">
+            {settings?.features?.wishlist !== false && (
+              <Link
+                to="/wishlist"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+              >
+                <Heart size={18} /> Wishlist {wishlistIds.length > 0 && `(${wishlistIds.length})`}
+              </Link>
+            )}
+            {user ? (
+              <>
+                {user.role === 'ADMIN' && (
+                  <Link
+                    to="/admin/dashboard"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+                  >
+                    <Settings size={18} /> Admin Portal
+                  </Link>
+                )}
+                <Link
+                  to="/profile"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+                >
+                  <UserIcon size={18} /> My Account
+                </Link>
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="w-full flex items-center gap-2.5 text-left px-3 py-2.5 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
+                >
+                  <LogOut size={18} /> Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/auth/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 px-3 py-2.5 rounded-md text-base font-medium hover:bg-luxury-sand/50"
+              >
+                <UserIcon size={18} /> Login
+              </Link>
+            )}
+          </div>
         </div>
       )}
     </nav>
